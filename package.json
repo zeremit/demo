@@ -1,0 +1,19 @@
+{
+  "name": "demo-l20n",
+  "version": "1.0.2",
+  "description": "demo for l20n",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/l20n/demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/l20n/demo/issues"
+  },
+  "homepage": "https://github.com/l20n/demo#readme"
+}

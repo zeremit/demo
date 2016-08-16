@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/l20n/demo/issues"
   },
-  "homepage": "https://github.com/l20n/demo#readme"
+  "homepage": "https://github.com/l20n/demo#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }

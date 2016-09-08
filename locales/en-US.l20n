@@ -1,6 +1,12 @@
 <title "L20n demo">
 <hello "Hello, world!">
 
+
+<amount_hours[@cldr.plural($amount)] {
+                one: "{{ $amount }} day",
+                other: "{{ $amount }} days"
+}>
+
 /* ------------------------------------------------------------------------- */
 
 <l20n "L20n">
@@ -34,6 +40,25 @@
 >
 
 <currentWidth "Current width: {{ @screen.width.px }}px.">
+
+<Jan "January">
+<Feb "February">
+<Mar "March">
+<Apr "April">
+<May "May">
+<Jun "June">
+<Jul "July">
+<Aug "August">
+<Sep "September">
+<Oct "October">
+<Nov "November">
+<Dec "December">
+
+hello = Hello
+
+<test space "Test space">
+
+<hello_name "Hello {{ name }}">
 
 /* ------------------------------------------------------------------------- */
 

@@ -4,50 +4,138 @@
     <title data-l10n-id="title"></title>
 
     <!-- L20n setup -->
-    <link rel="localization" href="locales/manifest.json">
-    <script type="application/l10n-data+json">
-      {
-        "build": "prod",
-        "mode": "multi"
-      }
-    </script>
+    <meta name="defaultLanguage" content="en-US">
+    <meta name="availableLanguages" content="en-US, pl">
+    <link rel="localization" href="locales/{locale}.l20n">
 
     <!-- Include the dist version of L20n -->
-    <script src="lib/l20n.js"></script>
+    <script src="node_modules/l20n/dist/bundle/web/l20n.js"></script>
+      <script src="node_modules/underscore/underscore.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.9/highcharts.js"></script>
+
     <script>
-      // L20n and document.l10n are now available
-      document.l10n.ready(function() {
-        console.log("Document's context is ready");
-      });
-    </script> 
+        var labels = [];
+        $(function () {
+            var categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var data = [129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4, 29.9, 71.5, 106.4];
+            var promises = [];
+            _.each(categories,function(element){
+                var prom = document.l10n.formatValue(element);
+                promises.push(prom);
+                prom.then(function(result){
+                    labels.push(result);
+                });
+            });
+            Promise.all(promises).then(function(){
+                var chart_translation = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'container_translation'
+                    },
+                    title: {
+                        text: '<span>Tooltip footer format demo</span>'
+                    },
+
+                    subtitle: {
+                        text: 'The tooltip should provide a HTML table where the table is closed in the footerFormat'
+                    },
+
+                    xAxis: {
+                        categories: labels,
+                        labels: {
+                            useHTML: false
+                        }
+
+                    },
+
+                    tooltip: {
+                        shared: true,
+                        useHTML: true,
+                        headerFormat: '<small>{point.key}</small><table>',
+                        pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+                        '<td style="text-align: right"><b>{point.y} EUR</b></td></tr>',
+                        footerFormat: '</table>',
+                        valueDecimals: 2
+                    },
+
+                    series: [{
+                        name: 'Short',
+                        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+                    }, {
+                        name: 'Long named series',
+                        data: [129.9, 171.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 195.6, 154.4].reverse()
+                    }]
+
+                });
+                $('#button').click(function() {
+                    data.reverse();
+                    chart_translation.series[0].setData(data);
+                });
+            });
+
+            $('#button_redraw').click(function() {
+            });
+        });
+        <!--$(function () {-->
+            <!--var chart = new Highcharts.Chart({-->
+                <!--chart: {-->
+                    <!--renderTo: 'container'-->
+                <!--},-->
+                <!--title: {-->
+                    <!--text: '<span>Tooltip footer format demo</span>'-->
+                <!--},-->
+
+                <!--subtitle: {-->
+                    <!--text: 'The tooltip should provide a HTML table where the table is closed in the footerFormat'-->
+                <!--},-->
+
+                <!--xAxis: {-->
+                    <!--categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],-->
+                    <!--labels: {-->
+                        <!--useHTML: true,-->
+                        <!--formatter: function() {-->
+                            <!--return "<tspan >" + this.value + "</tspan>";-->
+                        <!--}-->
+                    <!--}-->
+
+                <!--},-->
+
+                <!--tooltip: {-->
+                    <!--shared: true,-->
+                    <!--useHTML: true,-->
+                    <!--headerFormat: '<small>{point.key}</small><table>',-->
+                    <!--pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +-->
+                    <!--'<td style="text-align: right"><b>{point.y} EUR</b></td></tr>',-->
+                    <!--footerFormat: '</table>',-->
+                    <!--valueDecimals: 2-->
+                <!--},-->
+
+                <!--series: [{-->
+                    <!--name: 'Short',-->
+                    <!--data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]-->
+                <!--}, {-->
+                    <!--name: 'Long named series',-->
+                    <!--data: [129.9, 171.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 195.6, 154.4].reverse()-->
+                <!--}]-->
+
+            <!--});-->
+            <!--var data = [129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4, 29.9, 71.5, 106.4];-->
+        <!--});-->
+    </script>
+
   </head>
 
   <body>
-    <h1 data-l10n-id="hello"></h1>
-    <p data-l10n-id="intro"></p>
+    <div id="container_translation" style="height: 300px"></div>
+    <!--<div id="container" style="height: 300px"></div>-->
+    <!--<h1 data-l10n-id="hello"></h1>-->
+    <!--<h1 data-l10n-id="hello_name" data-l10n-args='{"name": "dima" }'></h1>-->
+    <!--<h1 data-l10n-id="amount_hours" data-l10n-args='{"amount" : 1}'></h1>-->
+    <button id="button">Set new data</button>
+    <!--<button id="button_redraw">Redraw</button>-->
+    <!--<h1 data-l10n-id="test space"></h1>-->
+  <!--<h1 style="min-width: 100px; text-align: center"></h1>-->
 
-    <hr>
-    <p data-l10n-id="langNego"></p>
-
-    <hr>
-    <p data-l10n-id="screenWidth"></p>
-    <input type="button" data-l10n-id="button">
-
-    <hr>
-    <p data-l10n-id="more" data-l10n-overlay>
-      <a href="http://l20n.org"></a>
-    </p>
-    <small data-l10n-id="kthxbye"></small>
-
-    <script>
-      var button = document.querySelector('input');
-      button.addEventListener('click', function insert() {
-        var p = document.createElement('p');
-        p.setAttribute('data-l10n-id', 'currentWidth'); 
-        document.l10n.localizeNode(p); 
-        document.body.insertBefore(p, button.nextSibling);
-      });
-    </script>
 
   </body>
 </html>

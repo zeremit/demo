@@ -1,0 +1,5 @@
+---
+applications:
+ - name: highcharts
+   command: node service.js
+   buildpack: https://github.com/cloudfoundry/nodejs-buildpack
